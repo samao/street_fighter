@@ -1,0 +1,26 @@
+# [target.x86_64-pc-windows-gnu]
+# linker = "rust-lld.exe"  # wsm
+# linker = "link.exe" 如果使用 MSVC linker window
+# linker = "x86_64-w64-mingw32-gcc" #wsl
+# ar = "x86_64-w64-mingw32-ar"
+
+#wsl
+# linker = "clang"
+# rustflags = [
+#     "-C", "link-arg=--target=x86_64-w64-windows-gnu",
+#     "-C", "link-arg=-fuse-ld=lld",
+#     "-C", "link-arg=-L/usr/lib/gcc/x86_64-w64-mingw32/10-win32"
+# ]
+
+
+[env]
+RUST_BACKTRACE = "1"
+GODOT_SUPPRESSED_WAARNINGS = "GdGuardAcrossAwait"
+
+[alias]
+b = "build --release"
+dev = "build"
+
+
+[build]
+target = "x86_64-pc-windows-gnu"

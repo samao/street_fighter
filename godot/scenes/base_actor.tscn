@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b5hu5oje5ebor"]
+
+[node name="BaseActor" type="Actor" unique_id=1390634708]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=563691669]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1287372651]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1317860277]
+
+[node name="DamageReceiver" type="DamageReceiver" parent="." unique_id=760441027]
+
+[node name="DamageEmitter" type="DamageEmitter" parent="." unique_id=910764471]

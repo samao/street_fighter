@@ -1,0 +1,219 @@
+[gd_scene format=3 uid="uid://4djvuftksrij"]
+
+[ext_resource type="PackedScene" uid="uid://b5hu5oje5ebor" path="res://scenes/base_actor.tscn" id="1_p8xjw"]
+[ext_resource type="Texture2D" uid="uid://bb36pgv1mng1f" path="res://assets/art/characters/player.png" id="2_mllp0"]
+
+[sub_resource type="Health" id="Health_i7k6m"]
+
+[sub_resource type="Animation" id="Animation_mllp0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_gdu5h"]
+resource_name = "death"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [80, 81, 82]
+}
+
+[sub_resource type="Animation" id="Animation_qiwci"]
+resource_name = "heavy_kick"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.39999998, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [50, 51, 52, 53, 54, 50]
+}
+
+[sub_resource type="Animation" id="Animation_nlbyy"]
+resource_name = "heavy_punch"
+length = 0.6
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19999999, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [30, 31, 32]
+}
+
+[sub_resource type="Animation" id="Animation_b4kdd"]
+resource_name = "hurt"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [70, 71, 72]
+}
+
+[sub_resource type="Animation" id="Animation_7cftg"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_1pe3x"]
+resource_name = "jump"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.39999998),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [60, 61, 62, 63, 64]
+}
+
+[sub_resource type="Animation" id="Animation_kr6up"]
+resource_name = "kick"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.19999999, 0.3, 0.39999998, 0.49999997),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [40, 41, 42, 43, 44, 45]
+}
+
+[sub_resource type="Animation" id="Animation_6ytb4"]
+resource_name = "punch"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [20, 21, 22, 23]
+}
+
+[sub_resource type="Animation" id="Animation_bgfcc"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gdu5h"]
+_data = {
+&"RESET": SubResource("Animation_mllp0"),
+&"death": SubResource("Animation_gdu5h"),
+&"heavy_kick": SubResource("Animation_qiwci"),
+&"heavy_punch": SubResource("Animation_nlbyy"),
+&"hurt": SubResource("Animation_b4kdd"),
+&"idle": SubResource("Animation_7cftg"),
+&"jump": SubResource("Animation_1pe3x"),
+&"kick": SubResource("Animation_kr6up"),
+&"punch": SubResource("Animation_6ytb4"),
+&"run": SubResource("Animation_bgfcc")
+}
+
+[node name="PlayerActor" unique_id=1390634708 instance=ExtResource("1_p8xjw")]
+health = SubResource("Health_i7k6m")
+
+[node name="Sprite2D" parent="." index="0" unique_id=563691669]
+texture = ExtResource("2_mllp0")
+centered = false
+offset = Vector2(-24, -48)
+hframes = 10
+vframes = 10
+
+[node name="AnimationPlayer" parent="." index="1" unique_id=1287372651]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_gdu5h")
+autoplay = &"idle"
+
+[node name="Controler" type="Controler" parent="." index="5" unique_id=174213395]
+speed = 1200.0
+decelerate = 0.5
+
+[node name="StateMachine" type="StateMachine" parent="." index="6" unique_id=1654930343]
+unique_name_in_owner = true
+
+[node name="idle" type="PlayerStateIdle" parent="StateMachine" index="0" unique_id=92585649]
+
+[node name="run" type="PlayerStateRun" parent="StateMachine" index="1" unique_id=276744128]
+
+[node name="jump" type="PlayerStateJump" parent="StateMachine" index="2" unique_id=1283893162]
+height = -200.0
