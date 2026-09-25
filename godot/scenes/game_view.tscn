@@ -1,8 +1,59 @@
 [gd_scene format=3 uid="uid://ci6buhvhmxltk"]
 
+[ext_resource type="Texture2D" uid="uid://8re1onaxq7pa" path="res://assets/art/backgrounds/street-background.png" id="1_i7k6m"]
 [ext_resource type="PackedScene" uid="uid://4djvuftksrij" path="res://scenes/player_actor.tscn" id="1_pkiub"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+size = Vector2(10, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7k6m"]
+size = Vector2(400, 27)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2e3f"]
+size = Vector2(400, 10)
 
 [node name="GameView" type="Node" unique_id=266934220]
 
+[node name="AirWall" type="Node" parent="." unique_id=2017062118]
+
+[node name="Left" type="StaticBody2D" parent="AirWall" unique_id=722320483]
+position = Vector2(-5, 0)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AirWall/Left" unique_id=449424053]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="Top" type="StaticBody2D" parent="AirWall" unique_id=555206223]
+position = Vector2(200, -5)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AirWall/Top" unique_id=84442733]
+position = Vector2(0, 8.5)
+shape = SubResource("RectangleShape2D_i7k6m")
+
+[node name="Right" type="StaticBody2D" parent="AirWall" unique_id=1718756050]
+position = Vector2(405, 1)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AirWall/Right" unique_id=1425011181]
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="Bottom" type="StaticBody2D" parent="AirWall" unique_id=1297081654]
+position = Vector2(200, 69)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AirWall/Bottom" unique_id=1789295147]
+shape = SubResource("RectangleShape2D_u2e3f")
+
+[node name="StreetBackground" type="Sprite2D" parent="." unique_id=1204556722]
+texture = ExtResource("1_i7k6m")
+centered = false
+
 [node name="PlayerActor" parent="." unique_id=1390634708 instance=ExtResource("1_pkiub")]
-position = Vector2(253, 205)
+position = Vector2(23, 55)
+
+[node name="CameraLimitRect" type="CameraLimitRect" parent="." unique_id=183938806]
+width = 400.0
+height = 64.0

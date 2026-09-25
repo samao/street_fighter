@@ -1,4 +1,4 @@
-use godot::prelude::*;
+use godot::{classes::InputEvent, prelude::*};
 
 #[derive(GodotClass)]
 #[class(init, base = Node)]
@@ -12,11 +12,26 @@ pub(crate) struct StateMachine {
 impl INode for StateMachine {
     fn physics_process(&mut self, delta: f64) {
         if let Some(ref mut state) = self.current_state {
-            let next_state = state.call("update", &[delta.to_variant()]);
-            if next_state.is_nil() {
-                return;
+            if state.has_method("update") {
+                let next_state = state.call("update", &[delta.to_variant()]);
+                if next_state.is_nil() {
+                    return;
+                }
+                self.transition(String::from_variant(&next_state));
             }
-            self.transition(String::from_variant(&next_state));
+        }
+    }
+
+    fn input(&mut self, event: Gd<InputEvent>) {
+        if let Some(ref mut state) = self.current_state {
+            if state.has_method("handle_input") {
+                let next_state = state.call("handle_input", &[event.to_variant()]);
+
+                if next_state.is_nil() {
+                    return;
+                }
+                self.transition(String::from_variant(&next_state));
+            }
         }
     }
 }
@@ -31,10 +46,16 @@ impl StateMachine {
                     self.current_state = Some(prev_state);
                     return;
                 }
-                prev_state.call_deferred("exit", &[]);
+                self.base_mut().set_physics_process(false);
+                if prev_state.has_method("exit") {
+                    prev_state.call("exit", &[]);
+                }
             }
             self.current_state = Some(state.clone());
-            state.call_deferred("enter", &[]);
+            self.base_mut().set_physics_process(true);
+            if state.has_method("enter") {
+                state.call("enter", &[]);
+            }
         } else {
             godot_print!("不存在状态: {state_name}");
         }
