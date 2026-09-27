@@ -4,7 +4,10 @@ use godot::{
     prelude::*,
 };
 
-use crate::resources::health::Health;
+use crate::{
+    entities::{damage_emitter::DamageEmitter, damage_receiver::DamageReceiver},
+    resources::health::Health,
+};
 
 #[derive(GodotClass)]
 #[class(init, base = CharacterBody2D)]
@@ -20,7 +23,10 @@ pub(crate) struct Actor {
     shadow: OnReady<Gd<Sprite2D>>,
     #[init(node = "%CollisionShape2D")]
     collider: OnReady<Gd<CollisionShape2D>>,
-
+    #[init(node = "%DamageEmitter")]
+    damage_emitter: OnReady<Gd<DamageEmitter>>,
+    #[init(node = "%DamageReceiver")]
+    damage_receiver: OnReady<Gd<DamageReceiver>>,
     #[init(val = None)]
     shadow_fix_pos: Option<Vector2>,
 }
@@ -36,6 +42,10 @@ impl ICharacterBody2D for Actor {
             .signals()
             .die()
             .connect_other(&*self, Self::on_actor_die);
+        self.damage_receiver
+            .signals()
+            .damage_received()
+            .connect_other(&*self, Self::on_damage_received);
     }
 
     fn process(&mut self, _delta: f64) {
@@ -56,8 +66,17 @@ impl Actor {
     pub fn get_actor_health(&self) -> Gd<Health> {
         self.health.clone()
     }
+
+    fn on_damage_received(&mut self, from: Gd<DamageEmitter>) {
+        let damage = from.bind().get_amount();
+        self.health
+            .call_deferred("take_damage", &[damage.to_variant()]);
+        self.signals().was_hit().emit();
+    }
+
     fn on_actor_die(&mut self) {
-        // godot_print!("死球了");
+        godot_print!("死球了");
+        self.signals().was_die().emit();
     }
 
     pub(crate) fn set_velocity(&mut self, v: Vector2) {
@@ -66,8 +85,10 @@ impl Actor {
 
         if v.x > 0.0 {
             self.body.set_scale(Vector2::new(1.0, 1.0));
+            self.damage_emitter.set_scale(Vector2::new(1.0, 1.0));
         } else if v.x < 0.0 {
             self.body.set_scale(Vector2::new(-1.0, 1.0));
+            self.damage_emitter.set_scale(Vector2::new(-1.0, 1.0));
         }
     }
 
@@ -96,10 +117,23 @@ impl Actor {
             self.shadow.set_position(Vector2::ZERO);
         }
     }
+
+    pub(crate) fn set_damage_reciver_enable(&mut self, v: bool) {
+        self.damage_receiver.set_monitorable(v);
+    }
+
+    pub(crate) fn set_attack_active(&mut self, v: bool) {
+        self.damage_emitter.set_monitoring(v);
+    }
 }
 
 #[godot_api]
 impl Actor {
+    #[signal]
+    pub fn was_hit();
+    #[signal]
+    pub fn was_die();
+
     #[func]
     pub fn play_anim(&mut self, anim_name: String) {
         if self.anim.has_animation(anim_name.as_str()) {
@@ -108,5 +142,13 @@ impl Actor {
         } else {
             godot_print!("no animation name {} exist!", anim_name);
         }
+    }
+
+    #[func]
+    pub fn get_anim_length_by_name(&self, anim_name: String) -> f32 {
+        if let Some(anim) = self.anim.get_animation(anim_name.as_str()) {
+            return anim.get_length();
+        }
+        0.0
     }
 }

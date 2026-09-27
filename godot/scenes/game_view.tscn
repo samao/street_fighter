@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://ci6buhvhmxltk"]
 
 [ext_resource type="Texture2D" uid="uid://8re1onaxq7pa" path="res://assets/art/backgrounds/street-background.png" id="1_i7k6m"]
-[ext_resource type="PackedScene" uid="uid://4djvuftksrij" path="res://scenes/player_actor.tscn" id="1_pkiub"]
+[ext_resource type="PackedScene" uid="uid://cxqmkuyo1wkfn" path="res://scenes/characters/player.tscn" id="3_nc4dn"]
+[ext_resource type="PackedScene" uid="uid://8pvvnmicbhp2" path="res://scenes/props/barrel.tscn" id="3_u2e3f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
 size = Vector2(10, 64)
@@ -51,9 +52,15 @@ shape = SubResource("RectangleShape2D_u2e3f")
 texture = ExtResource("1_i7k6m")
 centered = false
 
-[node name="PlayerActor" parent="." unique_id=1390634708 instance=ExtResource("1_pkiub")]
-position = Vector2(23, 55)
-
 [node name="CameraLimitRect" type="CameraLimitRect" parent="." unique_id=183938806]
 width = 400.0
 height = 64.0
+
+[node name="YShort" type="Node2D" parent="." unique_id=1908351840]
+y_sort_enabled = true
+
+[node name="Barrel" parent="YShort" unique_id=792798577 instance=ExtResource("3_u2e3f")]
+position = Vector2(59, 55)
+
+[node name="Character" parent="YShort" unique_id=166946257 instance=ExtResource("3_nc4dn")]
+position = Vector2(24, 54)

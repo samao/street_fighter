@@ -30,12 +30,14 @@ impl PlayerStateHeavyPunch {
         godot_print!("进入heavy_punch");
         self.play_anim();
         self.set_velocity(Vector2::ZERO);
+        self.set_attack_active(true);
         self.duration = self.get_current_animation_length();
     }
 
     #[func]
     fn exit(&mut self) {
         godot_print!("退出 heavy punch");
+        self.set_attack_active(false);
     }
 
     #[func]

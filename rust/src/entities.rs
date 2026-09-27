@@ -4,3 +4,7 @@ pub(crate) mod damage_receiver;
 
 pub(crate) mod actor;
 pub(crate) mod controler;
+
+pub(crate) mod barrel;
+pub(crate) mod detector;
+pub(crate) mod enemy_ai;

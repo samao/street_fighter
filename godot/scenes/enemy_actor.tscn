@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://dj2mfqsei0hmq"]
-
-[ext_resource type="PackedScene" uid="uid://b5hu5oje5ebor" path="res://scenes/base_actor.tscn" id="1_tfqou"]
-
-[node name="EmenyActor" unique_id=1390634708 instance=ExtResource("1_tfqou")]

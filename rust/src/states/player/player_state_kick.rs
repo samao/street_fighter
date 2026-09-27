@@ -27,11 +27,13 @@ impl PlayerStateKick {
         self.play_anim();
         self.set_velocity(Vector2::ZERO);
         self.duration = self.get_current_animation_length();
+        self.set_attack_active(true);
     }
 
     #[func]
     fn exit(&mut self) {
         godot_print!("退出 puhch");
+        self.set_attack_active(false);
     }
 
     #[func]

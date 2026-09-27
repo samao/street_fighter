@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://jqy8u4wturj3"]
+
+[node name="Character" type="Character" unique_id=1724329862]
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1083862200]
+unique_name_in_owner = true
+
+[node name="Body" type="Sprite2D" parent="." unique_id=1966322628]
+unique_name_in_owner = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1402752998]
+unique_name_in_owner = true
+
+[node name="DamageEmitter" type="DamageEmitter" parent="." unique_id=1410836941]
+unique_name_in_owner = true
+monitorable = false
+
+[node name="DamageReceiver" type="DamageReceiver" parent="." unique_id=479576114]
+unique_name_in_owner = true
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1668722357]
+unique_name_in_owner = true

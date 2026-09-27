@@ -2,19 +2,26 @@
 
 [ext_resource type="Texture2D" uid="uid://jf3o54ng4iaw" path="res://assets/art/characters/shadow.png" id="1_t47pj"]
 
+[sub_resource type="Health" id="Health_nfxsl"]
+
 [node name="BaseActor" type="Actor" unique_id=1390634708]
+health = SubResource("Health_nfxsl")
 
 [node name="Shadow" type="Sprite2D" parent="." unique_id=1469862290]
 unique_name_in_owner = true
 texture = ExtResource("1_t47pj")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=563691669]
+unique_name_in_owner = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1287372651]
+unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1317860277]
 unique_name_in_owner = true
 
 [node name="DamageReceiver" type="DamageReceiver" parent="." unique_id=760441027]
+unique_name_in_owner = true
 
 [node name="DamageEmitter" type="DamageEmitter" parent="." unique_id=910764471]
+unique_name_in_owner = true

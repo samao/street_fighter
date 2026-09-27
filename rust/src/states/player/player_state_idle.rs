@@ -21,6 +21,7 @@ impl PlayerStateIdle {
         godot_print!("进入idle");
         self.play_anim();
         self.set_velocity(Vector2::ZERO);
+        self.set_attack_active(false);
     }
 
     #[func]

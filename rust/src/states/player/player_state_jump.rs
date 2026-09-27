@@ -1,5 +1,8 @@
 use crate::states::base_state::IBaseState;
-use godot::{classes::Input, prelude::*};
+use godot::{
+    classes::{Input, InputEvent},
+    prelude::*,
+};
 
 #[derive(GodotClass)]
 #[class(init, base = Node)]
@@ -41,19 +44,30 @@ impl PlayerStateJump {
 
     #[func]
     fn exit(&mut self) {
-        godot_print!("退出jump");
         let mut pos = self.get_global_position();
         pos.y = self.jump_positon.y;
         self.set_global_position(pos);
         self.set_collision_disabled(false);
         self.set_shadow_fixed(false);
+        self.set_attack_active(false);
+        self.set_velocity(Vector2::ZERO);
     }
+
+    #[func]
+    fn handle_input(&mut self, event: Gd<InputEvent>) -> Variant {
+        if event.is_action_pressed("kick") {
+            self.play_anim_by_name("jump_kick".to_string());
+            self.set_attack_active(true);
+        }
+        Variant::nil()
+    }
+
     #[func]
     fn update(&mut self, delta: f64) -> Variant {
         let delta = delta as f32;
         self.duration -= delta;
         if self.duration <= 0.0 {
-            return "idle".to_variant();
+            return "land".to_variant();
         }
 
         let dir = Input::singleton().get_axis("left", "right");
