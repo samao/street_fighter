@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://7sbj78udkw1m"]
+
+[ext_resource type="PackedScene" uid="uid://ipku52clx1r8" path="res://scenes/characters/enemy.tscn" id="1_ed02w"]
+[ext_resource type="Texture2D" uid="uid://bbjabfwhiijbn" path="res://assets/art/characters/enemy_goon.png" id="2_1nj8h"]
+
+[sub_resource type="EnemySetting" id="EnemySetting_1nj8h"]
+texture = ExtResource("2_1nj8h")
+max_hp = 5.0
+
+[node name="EnemyGoon" unique_id=166946257 instance=ExtResource("1_ed02w")]
+
+[node name="DamageReceiver" parent="." index="4" unique_id=479576114]
+visible = false
+
+[node name="AIAgent" parent="." index="8" unique_id=1387503746]
+config = SubResource("EnemySetting_1nj8h")

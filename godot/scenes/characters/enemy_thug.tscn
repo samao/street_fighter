@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dp60y8eq5tfsc"]
+
+[ext_resource type="PackedScene" uid="uid://ipku52clx1r8" path="res://scenes/characters/enemy.tscn" id="1_widtb"]
+[ext_resource type="Texture2D" uid="uid://lrya7o2b73ry" path="res://assets/art/characters/enemy_thug.png" id="2_wjmyy"]
+
+[sub_resource type="EnemySetting" id="EnemySetting_wjmyy"]
+texture = ExtResource("2_wjmyy")
+max_hp = 8.0
+
+[node name="EnemyThug" unique_id=166946257 instance=ExtResource("1_widtb")]
+
+[node name="AIAgent" parent="." index="8" unique_id=1387503746]
+config = SubResource("EnemySetting_wjmyy")
