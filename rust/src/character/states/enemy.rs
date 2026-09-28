@@ -1,21 +1,63 @@
-use crate::character::agent::Agent;
 use godot::{obj::WithBaseField, prelude::*};
 
-pub(super) mod idle;
-pub(super) mod jump;
-pub(super) mod jump_kick;
-pub(super) mod kick;
-pub(super) mod land;
-pub(super) mod punch;
-pub(super) mod take_off;
-pub(super) mod walk;
+use crate::character::{Character, ai_agent::AIAgent};
 
-trait IPlayerBaseState: WithBaseField<Base = Node> {
+pub(super) mod chase;
+pub(super) mod death;
+pub(super) mod hurt;
+pub(super) mod idle;
+pub(super) mod punch;
+
+trait IEnemyBaseState: WithBaseField<Base = Node> {
     ///设置控体速度
     fn set_agent_velocity(&mut self, velocity: Vector2) {
         if let Some(agent) = self.get_agent().as_mut() {
             agent.call_deferred("set_character_velocity", &[velocity.to_variant()]);
         }
+    }
+    ///设置控体速度
+    fn release_character(&mut self) {
+        if let Some(agent) = self.get_agent().as_mut() {
+            agent.call_deferred("release_character", &[]);
+        }
+    }
+
+    ///面向目标
+    fn face_to_target(&mut self) {
+        if let Some(agent) = self.get_agent().as_mut() {
+            agent.call_deferred("face_to_target", &[]);
+        }
+    }
+
+    //获取目标
+    fn get_nearest_player(&self) -> Option<Gd<Character>> {
+        if let Some(agent) = self.get_agent() {
+            return agent.bind().get_target();
+        }
+        None
+    }
+
+    fn agent_to_player_direction(&self) -> Vector2 {
+        if let Some(pos) = self.get_nearest_marker() {
+            return self.get_agent_position().direction_to(pos);
+        }
+        Vector2::ZERO
+    }
+
+    fn get_player_distance_squared(&self) -> f32 {
+        if let Some(pos) = self.get_nearest_marker() {
+            return self.get_agent_position().distance_squared_to(pos);
+        }
+        f32::MAX
+    }
+
+    //获取玩家最近的攻击位置
+    fn get_nearest_marker(&self) -> Option<Vector2> {
+        if let Some(agent) = self.get_agent() {
+            let pos = agent.bind().get_character_position();
+            return agent.bind().get_nearest_attack_marker(pos);
+        }
+        None
     }
 
     //获取物理体的速度
@@ -24,6 +66,14 @@ trait IPlayerBaseState: WithBaseField<Base = Node> {
             return agent.bind().get_character_velocity();
         }
         Vector2::ZERO
+    }
+
+    //获取当前血量
+    fn get_agent_current_hp(&self) -> f32 {
+        if let Some(agent) = self.get_agent() {
+            return agent.bind().get_current_hp();
+        }
+        0.0
     }
 
     ///设置控体位置
@@ -71,9 +121,9 @@ trait IPlayerBaseState: WithBaseField<Base = Node> {
         }
     }
 
-    fn get_agent(&self) -> Option<Gd<Agent>> {
+    fn get_agent(&self) -> Option<Gd<AIAgent>> {
         if let Some(owner) = self.base().get_owner() {
-            return owner.try_get_node_as::<Agent>("Agent");
+            return owner.try_get_node_as::<AIAgent>("AIAgent");
         }
         None
     }

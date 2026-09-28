@@ -1,4 +1,8 @@
-use godot::{classes::AnimationPlayer, init::is_editor_hint, prelude::*};
+use godot::{
+    classes::{AnimationPlayer, Marker2D},
+    init::is_editor_hint,
+    prelude::*,
+};
 
 use crate::{
     character::{
@@ -50,6 +54,21 @@ impl INode for Agent {
 #[godot_api]
 impl Agent {
     #[func]
+    pub fn set_collider_disabled(&mut self, v: bool) {
+        self.character.bind_mut().set_collider_disabled(v);
+    }
+
+    #[func]
+    pub fn set_damage_emitter_monitoring(&mut self, v: bool) {
+        self.character.bind_mut().set_damage_emitter_monitoring(v);
+    }
+
+    #[func]
+    pub fn set_damage_receiver_monitorable(&mut self, v: bool) {
+        self.character.bind_mut().set_damage_receiver_monitorable(v);
+    }
+
+    #[func]
     pub fn set_character_velocity(&mut self, velocity: Vector2) {
         self.character.set_velocity(velocity);
     }
@@ -69,5 +88,22 @@ impl Agent {
             return animation.get_length();
         }
         0.0
+    }
+
+    pub(crate) fn get_gravity(&self) -> Vector2 {
+        self.character.get_gravity()
+    }
+
+    pub(crate) fn get_character_velocity(&self) -> Vector2 {
+        self.character.get_velocity()
+    }
+
+    pub(crate) fn get_character_position(&self) -> Vector2 {
+        self.character.get_global_position()
+    }
+
+    #[func]
+    pub(crate) fn set_character_position(&mut self, v: Vector2) {
+        self.character.set_global_position(v);
     }
 }

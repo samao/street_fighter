@@ -17,6 +17,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_yewv4"]
 resource_name = "death"
@@ -54,7 +66,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_dyp2m"]
 resource_name = "idle"
-length = 0.39999999999999997
+length = 0.4
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -72,7 +84,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_7vyk4"]
 resource_name = "jump"
-length = 0.1
+length = 0.001
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -91,8 +103,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_2l4js"]
 resource_name = "jump_kick"
 length = 0.1
-loop_mode = 1
-step = 0.1
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -104,6 +115,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [63]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_eojnx"]
@@ -122,6 +145,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [40, 41, 42, 43, 44, 45]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_jk2m4"]
 resource_name = "land"
@@ -139,10 +174,22 @@ tracks/0/keys = {
 "update": 1,
 "values": [64]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_atpat"]
 resource_name = "punch"
-length = 0.19999999999999998
+length = 0.2
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -156,10 +203,22 @@ tracks/0/keys = {
 "update": 1,
 "values": [20, 21, 22, 23]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DamageEmitter:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.05, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="Animation" id="Animation_qgnko"]
 resource_name = "take_off"
-length = 0.19999999999999998
+length = 0.2
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -207,10 +266,18 @@ _data = {
 &"walk": SubResource("Animation_kqtwu")
 }
 
-[node name="Character" unique_id=166946257 instance=ExtResource("1_rp718")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
+radius = 3.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yewv4"]
+radius = 2.0
+height = 12.0
+
+[node name="Player" unique_id=166946257 instance=ExtResource("1_rp718")]
+collision_layer = 2
+collision_mask = 9
 
 [node name="Camera2D" type="Camera2D" parent="." index="0" unique_id=38702691]
-visible = false
 
 [node name="Body" parent="." index="2" unique_id=1966322628]
 position = Vector2(0, -24)
@@ -222,6 +289,20 @@ vframes = 10
 libraries/ = SubResource("AnimationLibrary_6eyoc")
 autoplay = &"idle"
 
+[node name="DamageEmitter" parent="." index="4" unique_id=1410836941]
+collision_layer = 2
+collision_mask = 96
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageEmitter" index="0" unique_id=688407616]
+position = Vector2(12, -14)
+shape = SubResource("CircleShape2D_wvhbo")
+
+[node name="CollisionShape2D" parent="." index="6" unique_id=1668722357]
+position = Vector2(0, -2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_yewv4")
+
 [node name="CharacterStateMachine" type="CharacterStateMachine" parent="." index="7" unique_id=304691435]
 
 [node name="PlayerIdle" type="PlayerIdle" parent="CharacterStateMachine" index="0" unique_id=784366208]
@@ -232,9 +313,26 @@ autoplay = &"idle"
 
 [node name="PlayerKick" type="PlayerKick" parent="CharacterStateMachine" index="3" unique_id=1406856053]
 
+[node name="PlayerTakeOff" type="PlayerTakeOff" parent="CharacterStateMachine" index="4" unique_id=317094121]
+
+[node name="PlayerJump" type="PlayerJump" parent="CharacterStateMachine" index="5" unique_id=742628970]
+jump_height = 30.0
+
+[node name="PlayerJumpKick" type="PlayerJumpKick" parent="CharacterStateMachine" index="6" unique_id=1421565649]
+
+[node name="PlayerLand" type="PlayerLand" parent="CharacterStateMachine" index="7" unique_id=1826470120]
+
 [node name="Agent" type="Agent" parent="." index="8" unique_id=662252156 node_paths=PackedStringArray("character", "animation", "state_machine", "damage_receiver", "damage_emitter")]
 character = NodePath("..")
 animation = NodePath("../AnimationPlayer")
 state_machine = NodePath("../CharacterStateMachine")
 damage_receiver = NodePath("../DamageReceiver")
 damage_emitter = NodePath("../DamageEmitter")
+
+[node name="EnemyMarkers" type="Node2D" parent="." index="9" unique_id=1211963063]
+
+[node name="Front" type="Marker2D" parent="EnemyMarkers" index="0" unique_id=1099149041 groups=["attack_group_marker"]]
+position = Vector2(18, 0)
+
+[node name="Back" type="Marker2D" parent="EnemyMarkers" index="1" unique_id=1881124590 groups=["attack_group_marker"]]
+position = Vector2(-17, 0)

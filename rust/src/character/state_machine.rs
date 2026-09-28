@@ -4,6 +4,8 @@ use godot::{
     prelude::*,
 };
 
+use crate::utils::next_frame;
+
 #[derive(GodotConvert, Debug, Clone, Copy, Export, Var, Default)]
 #[godot(via = GString)]
 pub enum PlayerStates {
@@ -18,6 +20,11 @@ pub enum PlayerStates {
     Land,
     Hurt,
     Death,
+    EnemyIdle,
+    EnemyChase,
+    EnemyPunch,
+    EnemyHurt,
+    EnemyDeath,
 }
 
 impl From<PlayerStates> for &str {
@@ -33,6 +40,11 @@ impl From<PlayerStates> for &str {
             PlayerStates::Hurt => "PlayerHurt",
             PlayerStates::Death => "PlayerDeath",
             PlayerStates::Kick => "PlayerKick",
+            PlayerStates::EnemyIdle => "EnemyIdle",
+            PlayerStates::EnemyChase => "EnemyChase",
+            PlayerStates::EnemyPunch => "EnemyPunch",
+            PlayerStates::EnemyHurt => "EnemyHurt",
+            PlayerStates::EnemyDeath => "EnemyDeath",
         }
     }
 }
@@ -44,6 +56,10 @@ pub(super) struct CharacterStateMachine {
 
     #[init(val = None)]
     current_states: Option<Gd<Node>>,
+
+    #[export]
+    #[init(val = false)]
+    show_state_log: bool,
 }
 
 #[godot_api]
@@ -115,20 +131,36 @@ impl CharacterStateMachine {
         self.base_mut().set_process_mode(ProcessMode::DISABLED);
         if let Some(mut state) = self.current_states.take() {
             if state.has_method("exit") {
-                godot_print!("退出状态: {:?}", state.get_name());
+                if self.show_state_log {
+                    godot_print!("退出状态: {:?}", state.get_name());
+                }
                 state.call("exit", &[]);
             }
         }
+        //清完旧状态，下一帧进入新状态
+        next_frame::<CharacterStateMachine>(
+            self.base().instance_id(),
+            Box::new(move |mut node| {
+                node.bind_mut().enter_next_state(next_state);
+                node.set_process_mode(ProcessMode::INHERIT);
+            }),
+        );
+    }
+
+    fn enter_next_state(&mut self, next_state: PlayerStates) {
         if let Some(mut state_node) = self.get_state_node(next_state.into()) {
             if state_node.has_method("enter") {
-                godot_print!("进入状态： {:?}", state_node.get_name());
+                if self.show_state_log {
+                    godot_print!("进入状态： {:?}", state_node.get_name());
+                }
                 state_node.call("enter", &[]);
             }
             self.current_states = Some(state_node);
         } else {
-            godot_print!("未配置state: {:?}", next_state);
+            if self.show_state_log {
+                godot_print!("未配置state: {:?}", next_state);
+            }
         }
-        self.base_mut().set_process_mode(ProcessMode::INHERIT);
     }
 
     fn get_state_node(&self, state: &str) -> Option<Gd<Node>> {
@@ -148,6 +180,11 @@ impl CharacterStateMachine {
             "PlayerDeath" => Some(PlayerStates::Death),
             "PlayerTakeOff" => Some(PlayerStates::TakeOff),
             "PlayerLand" => Some(PlayerStates::Land),
+            "EnemyIdle" => Some(PlayerStates::EnemyIdle),
+            "EnemyChase" => Some(PlayerStates::EnemyChase),
+            "EnemyPunch" => Some(PlayerStates::EnemyPunch),
+            "EnemyHurt" => Some(PlayerStates::EnemyHurt),
+            "EnemyDeath" => Some(PlayerStates::EnemyDeath),
             _ => None,
         }
     }

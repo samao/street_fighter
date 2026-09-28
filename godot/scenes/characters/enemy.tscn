@@ -1,5 +1,191 @@
 [gd_scene format=3 uid="uid://ipku52clx1r8"]
 
 [ext_resource type="PackedScene" uid="uid://jqy8u4wturj3" path="res://scenes/characters/character.tscn" id="1_7jb55"]
+[ext_resource type="Texture2D" uid="uid://cracc4qj4bl8k" path="res://assets/art/characters/enemy_punk.png" id="2_fulqv"]
 
-[node name="Character" unique_id=166946257 instance=ExtResource("1_7jb55")]
+[sub_resource type="Animation" id="Animation_fulqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_f2e6v"]
+resource_name = "death"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [50, 51, 52]
+}
+
+[sub_resource type="Animation" id="Animation_21x0f"]
+resource_name = "hurt"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [40, 41, 42]
+}
+
+[sub_resource type="Animation" id="Animation_jgk6k"]
+resource_name = "idle"
+length = 0.1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_3k4es"]
+resource_name = "punch"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [20, 21, 22]
+}
+
+[sub_resource type="Animation" id="Animation_x5khh"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0ag5d"]
+_data = {
+&"RESET": SubResource("Animation_fulqv"),
+&"death": SubResource("Animation_f2e6v"),
+&"hurt": SubResource("Animation_21x0f"),
+&"idle": SubResource("Animation_jgk6k"),
+&"punch": SubResource("Animation_3k4es"),
+&"walk": SubResource("Animation_x5khh")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvhbo"]
+size = Vector2(13, 20)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f2e6v"]
+radius = 2.0
+height = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvhbo"]
+radius = 50.0
+
+[node name="Enemy" unique_id=166946257 instance=ExtResource("1_7jb55")]
+collision_layer = 4
+collision_mask = 13
+
+[node name="Body" parent="." index="1" unique_id=1966322628]
+texture = ExtResource("2_fulqv")
+centered = false
+offset = Vector2(-24, -48)
+hframes = 10
+vframes = 10
+
+[node name="AnimationPlayer" parent="." index="2" unique_id=1402752998]
+libraries/ = SubResource("AnimationLibrary_0ag5d")
+autoplay = &"idle"
+
+[node name="DamageReceiver" parent="." index="4" unique_id=479576114]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageReceiver" index="0" unique_id=911966919]
+position = Vector2(0, -11)
+shape = SubResource("RectangleShape2D_wvhbo")
+
+[node name="CollisionShape2D" parent="." index="5" unique_id=1668722357]
+position = Vector2(0, -2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_f2e6v")
+
+[node name="Detector" type="Detector" parent="." index="6" unique_id=614954859]
+size = 50.0
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -19)
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector" index="0" unique_id=1563787586]
+shape = SubResource("CircleShape2D_wvhbo")
+debug_color = Color(0, 0.6, 0.69803923, 0)
+
+[node name="CharacterStateMachine" type="CharacterStateMachine" parent="." index="7" unique_id=351277066]
+
+[node name="EnemyIdle" type="EnemyIdle" parent="CharacterStateMachine" index="0" unique_id=820033532]
+
+[node name="EnemyChase" type="EnemyChase" parent="CharacterStateMachine" index="1" unique_id=1502260794]
+delay = 0.1
+speed = 20.0
+min_distance = 2.0
+
+[node name="EnemyPunch" type="EnemyPunch" parent="CharacterStateMachine" index="2" unique_id=1721440401]
+
+[node name="EnemyHurt" type="EnemyHurt" parent="CharacterStateMachine" index="3" unique_id=368029553]
+
+[node name="EnemyDeath" type="EnemyDeath" parent="CharacterStateMachine" index="4" unique_id=1247355516]
+
+[node name="AIAgent" type="AIAgent" parent="." index="8" unique_id=1387503746 node_paths=PackedStringArray("character", "animation", "state_machine", "damage_receiver", "damage_emitter", "detector", "body")]
+init_state = "EnemyIdle"
+character = NodePath("..")
+animation = NodePath("../AnimationPlayer")
+state_machine = NodePath("../CharacterStateMachine")
+damage_receiver = NodePath("../DamageReceiver")
+damage_emitter = NodePath("../DamageEmitter")
+detector = NodePath("../Detector")
+body = NodePath("../Body")

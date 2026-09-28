@@ -48,13 +48,22 @@ impl Detector {
     #[signal]
     pub fn miss();
 
+    #[signal]
+    pub fn detected(body: Gd<Node2D>);
+
+    #[signal]
+    pub fn dismiss();
+
     fn on_body_enter(&mut self, body: Gd<Node2D>) {
         self.signals().found().emit(&body);
+
+        self.signals().detected().emit(&body);
 
         let mut this = self.to_gd().clone();
         self.base_mut().connect_flags(
             "body_exited",
             &Callable::from_fn("on_detector_miss", move |_| {
+                this.bind_mut().signals().dismiss().emit();
                 this.bind_mut().signals().miss().emit();
             }),
             ConnectFlags::ONE_SHOT,

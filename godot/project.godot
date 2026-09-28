@@ -23,6 +23,10 @@ window/size/window_height_override=512
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 
+[global_group]
+
+attack_group_marker="玩家被攻击插槽"
+
 [input]
 
 left={

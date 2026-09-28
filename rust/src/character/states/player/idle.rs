@@ -25,7 +25,7 @@ impl PlayerIdle {
     #[func]
     fn input_handle(&self, event: Gd<InputEvent>) -> Variant {
         if event.is_action_pressed("jump") {
-            return "PlayerJump".to_variant();
+            return "PlayerTakeOff".to_variant();
         }
         if event.is_action_pressed("kick") {
             return "PlayerKick".to_variant();

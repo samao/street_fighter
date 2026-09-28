@@ -1,34 +1,25 @@
-use godot::{classes::InputEvent, prelude::*};
+use godot::prelude::*;
 
 use crate::character::states::player::IPlayerBaseState;
 
 #[derive(GodotClass)]
 #[class(init, base = Node)]
-pub(super) struct PlayerPunch {
+pub(super) struct PlayerLand {
     base: Base<Node>,
     #[init(val = 0.0)]
     duration: f32,
 }
 
 #[godot_api]
-impl PlayerPunch {
+impl PlayerLand {
     #[func]
     fn enter(&mut self) {
-        self.play_anim("punch");
-        self.set_agent_velocity(Vector2::ZERO);
-        self.duration = self.get_anim_length("punch");
+        self.play_anim("land");
+        self.duration = self.get_anim_length("land");
     }
 
     #[func]
     fn exit(&self) {}
-
-    #[func]
-    fn input_handle(&self, event: Gd<InputEvent>) -> Variant {
-        if event.is_action_pressed("jump") {
-            return "PlayerTakeOff".to_variant();
-        }
-        Variant::nil()
-    }
 
     #[func]
     fn update(&mut self, delta: f64) -> Variant {
@@ -40,4 +31,4 @@ impl PlayerPunch {
     }
 }
 
-impl IPlayerBaseState for PlayerPunch {}
+impl IPlayerBaseState for PlayerLand {}
